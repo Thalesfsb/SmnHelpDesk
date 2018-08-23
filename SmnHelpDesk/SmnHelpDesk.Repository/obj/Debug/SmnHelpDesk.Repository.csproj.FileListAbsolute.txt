@@ -1,0 +1,9 @@
+C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Repository\bin\Debug\SmnHelpDesk.Repository.dll
+C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Repository\bin\Debug\SmnHelpDesk.Repository.pdb
+C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Repository\bin\Debug\SmnHelpDesk.Domain.dll
+C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Repository\bin\Debug\System.Web.Mvc.dll
+C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Repository\bin\Debug\SmnHelpDesk.Domain.pdb
+C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Repository\bin\Debug\System.Web.Mvc.xml
+C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Repository\obj\Debug\SmnHelpDesk.Repository.csprojResolveAssemblyReference.cache
+C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Repository\obj\Debug\SmnHelpDesk.Repository.dll
+C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Repository\obj\Debug\SmnHelpDesk.Repository.pdb

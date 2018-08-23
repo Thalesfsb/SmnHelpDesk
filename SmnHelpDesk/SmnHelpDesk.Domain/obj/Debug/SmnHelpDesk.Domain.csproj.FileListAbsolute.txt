@@ -1,0 +1,6 @@
+C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Domain\bin\Debug\SmnHelpDesk.Domain.dll
+C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Domain\bin\Debug\SmnHelpDesk.Domain.pdb
+C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Domain\bin\Debug\System.Web.Mvc.dll
+C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Domain\bin\Debug\System.Web.Mvc.xml
+C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Domain\obj\Debug\SmnHelpDesk.Domain.dll
+C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Domain\obj\Debug\SmnHelpDesk.Domain.pdb
