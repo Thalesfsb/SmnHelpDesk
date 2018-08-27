@@ -1,7 +1,6 @@
-﻿using SmnHelpDesk.Domain;
-using SmnHelpDesk.Domain.Chamado;
+﻿using SmnHelpDesk.Domain.Chamado;
 using SmnHelpDesk.Domain.Chamado.Dto;
-using System;
+using SmnHelpDesk.Repository.Infra.Extension;
 using System.Collections.Generic;
 
 namespace SmnHelpDesk.Repository.Repositories
@@ -10,12 +9,9 @@ namespace SmnHelpDesk.Repository.Repositories
     {
         private readonly Conexao _conexao;
 
-        private readonly Notification _notification;
-
-        public ChamadoRepository(Conexao conexao, Notification notification)
+        public ChamadoRepository(Conexao conexao)
         {
             _conexao = conexao;
-            _notification = notification;
         }
 
         private enum Procedures
@@ -23,102 +19,117 @@ namespace SmnHelpDesk.Repository.Repositories
             GKSSP_InsChamado,
             GKSSP_SelChamado,
             GKSSP_SelChamados,
-            GKSSP_UpdChamado
+            GKSSP_UpdChamado,
+            GKSSP_UpdDescricaoMotivoCancel,
+            GKSFNC_GetProximoNumeroChamado,
+            GKSSP_SelChamadoHistoricoStatus,
+            GKSSP_SelTipoStatus,
+            GKSSP_UpdChamadoHistoricoStatus
         }
 
         public IEnumerable<ChamadoDto> Get(int? idEmpresa, int? idStatus, int? idCliente)
         {
-            var chamados = new List<ChamadoDto>();
-            try
-            {
-                _conexao.ExecuteProcedure(Procedures.GKSSP_SelChamados);
-                _conexao.AddParameter("@IdEmpresa", idEmpresa);
-                _conexao.AddParameter("@IdStatus", idStatus);
-                _conexao.AddParameter("@IdCliente", idCliente);
+            _conexao.ExecuteProcedure(Procedures.GKSSP_SelChamados);
+            _conexao.AddParameter("@IdEmpresa", idEmpresa);
+            _conexao.AddParameter("@IdStatus", idStatus);
+            _conexao.AddParameter("@IdCliente", idCliente);
 
-                using (var r = _conexao.ExecuteReader())
-                    while (r.Read())
-                        chamados.Add(new ChamadoDto
-                        {
-                            Id = int.Parse(r["Id"].ToString()),
-                            NumeroChamado = int.Parse(r["NumeroChamado"].ToString()),
-                            NomeEmpresa = r["NomeEmpresa"].ToString(),
-                            NomeClienteCad = r["NomeClienteCad"].ToString(),
-                            NomeProblema = r["NomeProblema"].ToString(),
-                            NomeCriticidade = r["NomeCriticidade"].ToString(),
-                            NomeTipoStatus = r["NomeTipoStatus"].ToString()
-                        });
-            }
-            catch (Exception e)
-            {
-                _notification.Add(e.ToString());
-            }
+            var chamados = new List<ChamadoDto>();
+            using (var r = _conexao.ExecuteReader())
+                while (r.Read())
+                    chamados.Add(new ChamadoDto
+                    {
+                        Id = r.GetValue<int>("Id"),
+                        NumeroChamado = r.GetValue<int>("NumeroChamado"),
+                        NomeEmpresa = r.GetValue<string>("NomeEmpresa"),
+                        NomeClienteCad = r.GetValue<string>("NomeClienteCad"),
+                        NomeProblema = r.GetValue<string>("NomeProblema"),
+                        NomeCriticidade = r.GetValue<string>("NomeCriticidade"),
+                        NomeTipoStatus = r.GetValue<string>("NomeTipoStatus"),
+                        DescricaoMotivoCancel = r.GetValue<string>("DescricaoMotivoCancel")
+                    });
             return chamados;
         }
 
-        public ChamadoDto Get(int numeroChamado)
+        public ChamadoDto Get(int id)
         {
-            var chamado = new ChamadoDto();
-            try
-            {
-                _conexao.ExecuteProcedure(Procedures.GKSSP_SelChamado);
-                _conexao.AddParameter("@NumeroChamado", numeroChamado);
-
-                using (var r = _conexao.ExecuteReader())
-                    if (r.Read())
+            _conexao.ExecuteProcedure(Procedures.GKSSP_SelChamado);
+            _conexao.AddParameter("@Id", id);
+            using (var r = _conexao.ExecuteReader())
+                return !r.Read()
+                    ? null
+                    : new ChamadoDto
                     {
-                        chamado.Descricao = r["Descricao"].ToString();
-                        chamado.NumeroChamado = int.Parse(r["NumeroChamado"].ToString());
-                        chamado.NomeCriticidade = r["NomeCriticidade"].ToString();
-                        chamado.NomeTipoStatus = r["NomeTipoStatus"].ToString();
-                    }
-            }
-            catch (Exception e)
-            {
-                _notification.Add(e.ToString());
-            }
-            return chamado;
+                        Id = r.GetValue<int>("Id"),
+                        IdClienteCad = r.GetValue<int>("IdClienteCad"),
+                        IdCriticidade = r.GetValue<byte>("IdCriticidade"),
+                        IdTipo = r.GetValue<byte>("IdTipo"),
+                        IdStatus = r.GetValue<byte>("IdStatus"),
+                        IdClienteAlt = r.GetValue<int>("IdClienteAlt"),
+                        Descricao = r.GetValue<string>("Descricao"),
+                        NumeroChamado = r.GetValue<int>("NumeroChamado"),
+                        NomeCriticidade = r.GetValue<string>("NomeCriticidade"),
+                        NomeTipoStatus = r.GetValue<string>("NomeTipoStatus"),
+                        DescricaoMotivoCancel = r.GetValue<string>("DescricaoMotivoCancel")
+                    };
         }
 
-        public void Post(ChamadoDto chamado)
+        public int GetProximoNumero(int idEmpresa)
         {
-            try
-            {
-                _conexao.ExecuteProcedure(Procedures.GKSSP_InsChamado);
-                _conexao.AddParameter("NumeroChamado", chamado.NumeroChamado);
-                _conexao.AddParameter("NomeProblema", chamado.NomeProblema);
-                _conexao.AddParameter("Descricao", chamado.Descricao);
-                _conexao.AddParameter("IdCriticidade", chamado.IdCriticidade);
-                _conexao.AddParameter("IdTipo", chamado.IdTipo);
-                _conexao.AddParameter("IdStatus", chamado.IdStatus);
-                _conexao.AddParameter("IdClienteCad", chamado.IdClienteCad);
-                _conexao.ExecuteNonQuery();
-                _conexao.CloseConnection();
-            }
-            catch (Exception e)
-            {
-                _notification.Add(e.ToString());
-            }
+            _conexao.ExecuteProcedure(Procedures.GKSFNC_GetProximoNumeroChamado);
+            _conexao.AddParameter("@IdEmpresa", idEmpresa);
+            return _conexao.ExecuteNonQueryWithReturn();
+        }
+
+        public int Post(ChamadoDto chamado)
+        {
+            _conexao.ExecuteProcedure(Procedures.GKSSP_InsChamado);
+            _conexao.AddParameter("NumeroChamado", chamado.NumeroChamado);
+            _conexao.AddParameter("NomeProblema", chamado.NomeProblema);
+            _conexao.AddParameter("Descricao", chamado.Descricao);
+            _conexao.AddParameter("IdCriticidade", chamado.IdCriticidade);
+            _conexao.AddParameter("IdTipo", chamado.IdTipo);
+            _conexao.AddParameter("IdStatus", chamado.IdStatus);
+            _conexao.AddParameter("IdClienteCad", chamado.IdClienteCad);
+            return _conexao.ExecuteNonQueryWithReturn();
+        }
+
+        public void PostHistoricoStatus(ChamadoHistoricoStatusDto historicoStatus)
+        {
+            _conexao.ExecuteProcedure(Procedures.GKSSP_SelChamadoHistoricoStatus);
+            _conexao.AddParameter("IdChamado", historicoStatus.IdChamado);
+            _conexao.AddParameter("IdStatus", historicoStatus.IdStatus);
+            _conexao.AddParameter("IdColaborador", historicoStatus.IdColaborador);
+            _conexao.AddParameter("IdCliente", historicoStatus.IdCliente);
+            _conexao.ExecuteNonQuery();
         }
 
         public void Put(ChamadoDto chamado)
         {
-            try
-            {
-                _conexao.ExecuteProcedure(Procedures.GKSSP_UpdChamado);
-                _conexao.AddParameter("Nome", chamado.NomeProblema);
-                _conexao.AddParameter("Descricao", chamado.Descricao);
-                _conexao.AddParameter("IdCriticidade", chamado.IdCriticidade);
-                _conexao.AddParameter("IdTipo", chamado.IdTipo);
-                _conexao.AddParameter("IdStatus", chamado.IdStatus);
-                _conexao.AddParameter("IdClienteAlt", chamado.IdClienteAlt);
-                _conexao.ExecuteNonQuery();
-                _conexao.CloseConnection();
-            }
-            catch (Exception e)
-            {
-                _notification.Add(e.ToString());
-            }
+            _conexao.ExecuteProcedure(Procedures.GKSSP_UpdChamado);
+            _conexao.AddParameter("Nome", chamado.NomeProblema);
+            _conexao.AddParameter("Descricao", chamado.Descricao);
+            _conexao.AddParameter("IdCriticidade", chamado.IdCriticidade);
+            _conexao.AddParameter("IdTipo", chamado.IdTipo);
+            _conexao.AddParameter("IdStatus", chamado.IdStatus);
+            _conexao.AddParameter("IdClienteAlt", chamado.IdClienteAlt);
+            _conexao.ExecuteNonQuery();
+        }
+
+        public void Put(int id, string descricaoMotivoCancel)
+        {
+            _conexao.ExecuteProcedure(Procedures.GKSSP_UpdDescricaoMotivoCancel);
+            _conexao.AddParameter("@Id", id);
+            _conexao.AddParameter("@DescricaoMotivoCancel", descricaoMotivoCancel);
+            _conexao.ExecuteNonQuery();
+        }
+
+        public void PutStatus(int idChamado, int idStatus)
+        {
+            _conexao.ExecuteProcedure(Procedures.GKSSP_UpdChamadoHistoricoStatus);
+            _conexao.AddParameter("Id", idChamado);
+            _conexao.AddParameter("IdStatus", idStatus);
+            _conexao.ExecuteNonQuery();
         }
     }
 }

@@ -7,3 +7,5 @@ C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Repository\bin\Debu
 C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Repository\obj\Debug\SmnHelpDesk.Repository.csprojResolveAssemblyReference.cache
 C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Repository\obj\Debug\SmnHelpDesk.Repository.dll
 C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Repository\obj\Debug\SmnHelpDesk.Repository.pdb
+C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Repository\bin\Debug\Newtonsoft.Json.dll
+C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Repository\bin\Debug\Newtonsoft.Json.xml

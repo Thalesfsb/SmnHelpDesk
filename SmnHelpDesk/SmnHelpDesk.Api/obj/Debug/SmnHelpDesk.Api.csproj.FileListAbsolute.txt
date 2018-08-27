@@ -60,3 +60,5 @@ C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Api\bin\System.Web.
 C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Api\bin\System.Web.WebPages.xml
 C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Api\bin\System.Web.WebPages.Deployment.xml
 C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Api\bin\System.Web.WebPages.Razor.xml
+C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Api\bin\Swashbuckle.Core.dll
+C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Api\bin\WebActivatorEx.dll

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using SmnHelpDesk.Domain.Colaborador.Dto;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,13 +8,14 @@ namespace SmnHelpDesk.Domain.Chamado.Dto
 {
     public class ChamadoDto
     {
+        [JsonIgnore]
         public int Id { get; set; }
         public int NumeroChamado { get; set; }
         public string NomeProblema { get; set; }
         public string Descricao { get; set; }
-        public int IdCriticidade { get; set; }
-        public int IdTipo { get; set; }
-        public int IdStatus { get; set; }
+        public byte IdCriticidade { get; set; }
+        public byte IdTipo { get; set; }
+        public byte IdStatus { get; set; }
         public string NomeEmpresa { get; set; }
         public string NomeClienteCad { get; set; }
         public string NomeCriticidade { get; set; }
@@ -21,6 +24,10 @@ namespace SmnHelpDesk.Domain.Chamado.Dto
         public DateTime DataCadastro { get; set; }
         public int? IdClienteAlt { get; set; }
         public DateTime? DataAlteracao { get; set; }
+        public string DescricaoMotivoCancel { get; set; }
+        public bool IsPendenteAnalise => IdStatus == 1;
+
+        public IEnumerable<ColaboradorDto> Colaboradores { get; set; }
 
         public bool IsValid(Notification notification)
         {
@@ -29,13 +36,13 @@ namespace SmnHelpDesk.Domain.Chamado.Dto
             if (string.IsNullOrEmpty(NomeProblema))
                 camposObrigatorios.Add("NomeProblema");
 
-            if (string.IsNullOrEmpty(NomeTipoStatus))
+            if (IdTipo == default(int))
                 camposObrigatorios.Add("Tipo");
 
-            if (NumeroChamado == default(int))
-                camposObrigatorios.Add("NumeroChamado");
+            if (IdClienteCad == default(int))
+                camposObrigatorios.Add("Codigo do Cliente");
 
-            if (string.IsNullOrEmpty(NomeCriticidade))
+            if (IdCriticidade == default(int))
                 camposObrigatorios.Add("Criticidade");
 
             if (string.IsNullOrEmpty(Descricao))

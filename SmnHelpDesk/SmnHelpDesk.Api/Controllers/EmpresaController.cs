@@ -3,15 +3,15 @@ using SmnHelpDesk.Domain.Empresa;
 using SmnHelpDesk.Domain.Empresa.Dto;
 using System.Net;
 using System.Web.Http;
+using System.Web.Http.Description;
 
 namespace SmnHelpDesk.Api.Controllers
 {
-    public class EmpresaController : ApiController
+    public class EmpresaController : BaseController
     {
+        [ApiExplorerSettings(IgnoreApi = true)]
         private readonly IEmpresaRepository _empresaRepository;
-
         private readonly IEmpresaService _empresaService;
-
         private readonly Notification _notification;
 
         public EmpresaController(IEmpresaRepository empresaRepository, IEmpresaService empresaService, Notification notification)
@@ -30,10 +30,10 @@ namespace SmnHelpDesk.Api.Controllers
             return Ok();
         }
 
-        [HttpGet, Route("")]
-        public IHttpActionResult Get()
+        [HttpGet, Route("{idCliente}")]
+        public IHttpActionResult Get(int idCliente)
         {
-            var empresas = _empresaRepository.Get();
+            var empresas = _empresaRepository.Get(idCliente);
             if (_notification.Any)
                 return Content(HttpStatusCode.BadRequest, _notification.Get);
             return Ok(empresas);

@@ -4,3 +4,6 @@ C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Domain\bin\Debug\Sy
 C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Domain\bin\Debug\System.Web.Mvc.xml
 C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Domain\obj\Debug\SmnHelpDesk.Domain.dll
 C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Domain\obj\Debug\SmnHelpDesk.Domain.pdb
+C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Domain\obj\Debug\SmnHelpDesk.Domain.csprojResolveAssemblyReference.cache
+C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Domain\bin\Debug\Newtonsoft.Json.dll
+C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Domain\bin\Debug\Newtonsoft.Json.xml

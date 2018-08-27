@@ -7,13 +7,11 @@ using System.Web.Http;
 namespace SmnHelpDesk.Api.Controllers
 {
     [RoutePrefix("api/chamado")]
-    public class ChamadoController : ApiController
+    public class ChamadoController : BaseController
     {
-        private readonly Notification _notification;
-
         private readonly IChamadoService _chamadoService;
-
         private readonly IChamadoRepository _chamadoRepository;
+        private readonly Notification _notification;
 
         public ChamadoController(Notification notification, IChamadoService chamadoService, IChamadoRepository chamadoRepository)
         {
@@ -22,48 +20,73 @@ namespace SmnHelpDesk.Api.Controllers
             _chamadoRepository = chamadoRepository;
         }
 
-        [HttpGet, Route("{idEmpresa},{idStatus},{idCliente}")]
+        [HttpGet, Route("")]
         public IHttpActionResult Get(int? idEmpresa, int? idStatus, int? idCliente)
         {
             var chamados = _chamadoRepository.Get(idEmpresa, idStatus, idCliente);
-            if (_notification.Any)
-                return Content(HttpStatusCode.BadRequest, _notification.Get);
+            if (chamados == null)
+                return BadRequest("Não foram encontrados chamados");
             return Ok(chamados);
-
         }
 
-        [HttpGet, Route("{NumeroChamado}")]
-        public IHttpActionResult Get(int numeroChamado)
+        [HttpGet, Route("{id}")]
+        public IHttpActionResult Get(int id)
         {
-            var chamado = _chamadoRepository.Get(numeroChamado);
-            if (_notification.Any)
-                return Content(HttpStatusCode.BadRequest, _notification.Get);
+            var chamado = _chamadoRepository.Get(id);
+            if (chamado == null)
+                return BadRequest("Não foi encontrado nenhum chamado");
             return Ok(chamado);
         }
 
-        [HttpPut, Route("")]
-        public IHttpActionResult Put(ChamadoDto chamado)
+        [HttpPost, Route("")]
+        public IHttpActionResult Post(ChamadoDto chamado)
         {
-            if (chamado.IsValid(_notification))
-                return Content(HttpStatusCode.BadRequest, _notification.Get);
+            if (chamado == null)
+                return BadRequest("Os dados do chamado não foram enviados");
 
-            _chamadoRepository.Put(chamado);
+            _chamadoService.Post(chamado);
 
             if (_notification.Any)
                 return Content(HttpStatusCode.BadRequest, _notification.Get);
             return Ok();
         }
 
-        [HttpPost, Route("")]
-        public IHttpActionResult Post(ChamadoDto chamado)
+        [HttpPut, Route("{id}")]
+        public IHttpActionResult Put(int id, ChamadoDto chamado)
         {
-            if (chamado.IsValid(_notification))
-                return Content(HttpStatusCode.BadRequest, _notification.Get);
+            if (chamado == null)
+                return BadRequest("Os dados do chamado não foram enviados");
 
-            _chamadoRepository.Post(chamado);
+            chamado.Id = id;
 
+            if (!_chamadoService.Exists(chamado.Id))
+                return BadRequest("Esse chamado não existe");
+
+            _chamadoService.Put(chamado);
             if (_notification.Any)
                 return Content(HttpStatusCode.BadRequest, _notification.Get);
+            return Ok();
+        }
+
+        [HttpPatch, Route("{id}")]
+        public IHttpActionResult PutMotivoCancelamento(int id, string descricaoMotivoCancel)
+        {
+            _chamadoRepository.Put(id, descricaoMotivoCancel);
+            return Ok();
+        }
+
+        [HttpPut, Route("{idChamado}")]
+        public IHttpActionResult PutStatusCancelamento(int idChamado, int idStatus)
+        {
+            var historicoChamado = new ChamadoHistoricoStatusDto
+            {
+                IdChamado = idChamado,
+                IdStatus = idStatus
+            };
+
+            if (idStatus != 1 || idStatus != 2)
+                return BadRequest("Não é possível cancelar chamado");
+            _chamadoService.PutStatus(historicoChamado);
             return Ok();
         }
     }

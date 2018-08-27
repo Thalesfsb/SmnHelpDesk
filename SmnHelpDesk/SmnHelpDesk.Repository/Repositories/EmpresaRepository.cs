@@ -3,6 +3,7 @@ using SmnHelpDesk.Domain.Empresa;
 using SmnHelpDesk.Domain.Empresa.Dto;
 using SmnHelpDesk.Domain.Endereco.Dto;
 using SmnHelpDesk.Domain.Telefone.Dto;
+using SmnHelpDesk.Repository.Infra.Extension;
 using System;
 using System.Collections.Generic;
 
@@ -46,7 +47,7 @@ namespace SmnHelpDesk.Repository.Repositories
 
         }
 
-        public IEnumerable<EmpresaDto> Get()
+        public IEnumerable<EmpresaDto> GetAll(int? idCliente)
         {
             var empresa = new List<EmpresaDto>();
             try
@@ -57,26 +58,26 @@ namespace SmnHelpDesk.Repository.Repositories
                     while (r.Read())
                         empresa.Add(new EmpresaDto
                         {
-                            Id = int.Parse(r["Id"].ToString()),
-                            Cnpj = decimal.Parse(r["Cnpj"].ToString()),
-                            RazaoSocial = r["RazaoSocial"].ToString(),
-                            NomeFantasia = r["NomeFantasia"].ToString(),
-                            DataInativacao = DateTime.Parse(r["DataInativacao"].ToString()),
+                            Id = r.GetValue<int>("Id"),
+                            Cnpj = r.GetValue<decimal>("Cnpj"),
+                            RazaoSocial = r.GetValue<string>("RazaoSocial"),
+                            NomeFantasia = r.GetValue<string>("NomeFantasia"),
+                            DataInativacao = r.GetValue<DateTime>("DataInativacao"),
                             Telefone = new TelefoneDto
                             {
-                                Ddd = int.Parse(r["DDD"].ToString()),
-                                Numero = int.Parse(r["Numero"].ToString())
+                                Ddd = r.GetValue<int>("DDD"),
+                                Numero = r.GetValue<int>("Numero")
                             },
                             Endereco = new EnderecoDto
                             {
-                                Cep = int.Parse(r["Cep"].ToString()),
-                                NomEndereco = r["Nom_Endereco"].ToString(),
-                                NumEndereco = int.Parse(r["Num_Endereco"].ToString()),
-                                Bairro = r["Bairro"].ToString(),
-                                Complemento = r["Complemento"].ToString(),
-                                Cidade = r["Cidade"].ToString(),
-                                Uf = r["Uf"].ToString(),
-                                Id = int.Parse(r["Id"].ToString())
+                                Id = r.GetValue<int>("Id"),
+                                Cep = r.GetValue<int>("Cep"),
+                                NomEndereco = r.GetValue<string>("Nom_Empresa"),
+                                NumEndereco = r.GetValue<int>("Num_Endereco"),
+                                Bairro = r.GetValue<string>("Bairro"),
+                                Complemento = r.GetValue<string>("Complemento"),
+                                Cidade = r.GetValue<string>("Cidade"),
+                                Uf = r.GetValue<string>("Uf")
                             }
 
                         });
@@ -101,12 +102,11 @@ namespace SmnHelpDesk.Repository.Repositories
                 {
                     if (r.Read())
                     {
-
-                        empresa.Id = int.Parse(r["Id"].ToString());
-                        empresa.Cnpj = decimal.Parse(r["Cnpj"].ToString());
-                        empresa.RazaoSocial = r["RazaoSocial"].ToString();
-                        empresa.NomeFantasia = r["NomeFantasia"].ToString();
-                        empresa.DataInativacao = DateTime.Parse(r["DataInativacao"].ToString());
+                        empresa.Id = r.GetValue<int>("Id");
+                        empresa.Cnpj = r.GetValue<decimal>("Cnpj");
+                        empresa.RazaoSocial = r.GetValue<string>("RazaoSocial");
+                        empresa.NomeFantasia = r.GetValue<string>("NomeFantasia");
+                        empresa.DataInativacao = r.GetValue<DateTime>("DataInativacao");
                     }
                 }
             }
@@ -117,8 +117,9 @@ namespace SmnHelpDesk.Repository.Repositories
             return empresa;
         }
 
-        public void Post(EmpresaDto empresa)
+        public int Post(EmpresaDto empresa)
         {
+            var retorno = 0;
             try
             {
                 _conexao.ExecuteProcedure(Procedures.GKSSP_InsEmpresa);
@@ -128,12 +129,14 @@ namespace SmnHelpDesk.Repository.Repositories
                 _conexao.AddParameter("@IdColaboradorCadastro", empresa.IdColaboradorCadastro);
                 _conexao.AddParameter("IdEnderecoPrincipal", empresa.IdEnderecoPrincipal);
                 _conexao.AddParameter("IdTelefonePrincipal", empresa.IdTelefonePrincipal);
-                _conexao.ExecuteNonQuery();
+                retorno = _conexao.ExecuteNonQueryWithReturn<int>();
+                _conexao.CloseConnection();
             }
             catch (Exception e)
             {
                 _notification.Add(e.ToString());
             }
+            return retorno;
         }
 
         public void Put(EmpresaDto empresa)

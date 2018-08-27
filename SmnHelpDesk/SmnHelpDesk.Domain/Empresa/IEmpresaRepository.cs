@@ -5,11 +5,10 @@ namespace SmnHelpDesk.Domain.Empresa
 {
     public interface IEmpresaRepository
     {
-        void Post(EmpresaDto empresa);
+        int Post(EmpresaDto empresa);
         EmpresaDto Get(decimal cnpj);
-        IEnumerable<EmpresaDto> Get();
+        IEnumerable<EmpresaDto> GetAll(int? idCliente); // TODO: filtrar por cliente na proc
         void Put(EmpresaDto empresa);
         void Delete(decimal cnpj);
-
     }
 }

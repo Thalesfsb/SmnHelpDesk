@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
@@ -43,6 +47,9 @@
   <ItemGroup>
     <Compile Include="Chamado\ChamadoService.cs" />
     <Compile Include="Chamado\Dto\ChamadoDto.cs" />
+    <Compile Include="Chamado\Dto\ChamadoHistoricoStatusDto.cs" />
+    <Compile Include="Chamado\Dto\TipoCriticidadeDto.cs" />
+    <Compile Include="Chamado\Dto\TipoStatusDto.cs" />
     <Compile Include="Chamado\IChamadoRepository.cs" />
     <Compile Include="Chamado\IChamadoService.cs" />
     <Compile Include="Colaborador\Dto\ColaboradorDto.cs" />
@@ -56,7 +63,9 @@
     <Compile Include="Telefone\Dto\TelefoneDto.cs" />
     <Compile Include="Telefone\Dto\TelefoneTipoDto.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
