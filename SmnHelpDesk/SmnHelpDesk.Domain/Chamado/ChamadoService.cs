@@ -27,7 +27,7 @@ namespace SmnHelpDesk.Domain.Chamado
         public void Post(ChamadoDto chamado)
         {
             // validando o chamado
-            if (!chamado.IsValid(_notification))
+            if (chamado.IsValid(_notification))
                 return;
 
             // buscando a empresa do cliente
@@ -39,17 +39,18 @@ namespace SmnHelpDesk.Domain.Chamado
             }
 
             // buscando o próximo numero para o chamado
-            var numeroChamado = _chamadoRepository.GetProximoNumero(empresas.First().Id);
+            var numeroChamado = _chamadoRepository.GetProximoNumeroChamado(empresas.First().Id);
             chamado.NumeroChamado = numeroChamado;
 
             // cadastrando o chamado
+            chamado.IdStatus = 1; // Pendente de Análise
             var idChamado = _chamadoRepository.Post(chamado);
 
             // inserindo historico de status
             _chamadoRepository.PostHistoricoStatus(new ChamadoHistoricoStatusDto
             {
                 IdChamado = idChamado,
-                IdStatus = 1, // Pendente de Análise
+                IdStatus = chamado.IdStatus,
                 IdCliente = chamado.IdClienteCad
             });
         }
@@ -77,9 +78,26 @@ namespace SmnHelpDesk.Domain.Chamado
 
         public void PutStatus(ChamadoHistoricoStatusDto chamadoHistoricoStatus)
         {
-            _chamadoRepository.PutStatus(chamadoHistoricoStatus.IdChamado, chamadoHistoricoStatus.IdStatus);
+            chamadoHistoricoStatus.IsValid(_notification);
 
-            // inserindo historico de status
+            if (_notification.Any)
+                return;
+
+            var dadosChamado = _chamadoRepository.Get(chamadoHistoricoStatus.IdChamado);
+            if (dadosChamado == null)
+            {
+                _notification.Add("Chamado não encontrado");
+                return;
+            }
+
+            if (dadosChamado.IdStatus != 1 && dadosChamado.IdStatus != 2)
+            {
+                _notification.Add("Não é possível cancelar um chamado que já não está mais em análise");
+                return;
+            }
+            if (chamadoHistoricoStatus.IdColaborador == default(int))
+                chamadoHistoricoStatus.IdColaborador = null;
+            _chamadoRepository.PutStatus(chamadoHistoricoStatus.IdChamado, chamadoHistoricoStatus.IdStatus, chamadoHistoricoStatus.DescricaoMotivoCancel);
             _chamadoRepository.PostHistoricoStatus(chamadoHistoricoStatus);
         }
     }

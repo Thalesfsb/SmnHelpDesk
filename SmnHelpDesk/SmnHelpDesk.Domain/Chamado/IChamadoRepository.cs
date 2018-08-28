@@ -5,13 +5,12 @@ namespace SmnHelpDesk.Domain.Chamado
 {
     public interface IChamadoRepository
     {
-        int Post(ChamadoDto chamado);
+        IEnumerable<ChamadoDto> Get(int? idEmpresa);
         ChamadoDto Get(int id);
-        IEnumerable<ChamadoDto> Get(int? idEmpresa, int? idStatus, int? idCliente);
+        int Post(ChamadoDto chamado);
         void Put(ChamadoDto chamado);
-        void Put(int id, string descricaoMotivoCancel);
-        int GetProximoNumero(int idEmpresa);
+        int GetProximoNumeroChamado(int idEmpresa);
         void PostHistoricoStatus(ChamadoHistoricoStatusDto historicoStatus);
-        void PutStatus(int idChamado, int idStatus);
+        void PutStatus(int idChamado, int idStatus, string descricaoMotivoCancel);
     }
 }

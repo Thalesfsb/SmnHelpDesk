@@ -47,7 +47,6 @@
     <Compile Include="Repositories\ChamadoRepository.cs" />
     <Compile Include="Repositories\Conexao.cs" />
     <Compile Include="Repositories\EmpresaRepository.cs" />
-    <Compile Include="Repositories\httpputAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SmnHelpDesk.Domain\SmnHelpDesk.Domain.csproj">

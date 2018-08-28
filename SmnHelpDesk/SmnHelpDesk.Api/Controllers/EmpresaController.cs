@@ -7,6 +7,7 @@ using System.Web.Http.Description;
 
 namespace SmnHelpDesk.Api.Controllers
 {
+    [RoutePrefix("api/empresa")]
     public class EmpresaController : BaseController
     {
         [ApiExplorerSettings(IgnoreApi = true)]

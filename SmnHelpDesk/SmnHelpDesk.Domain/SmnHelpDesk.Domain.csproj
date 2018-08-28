@@ -48,8 +48,6 @@
     <Compile Include="Chamado\ChamadoService.cs" />
     <Compile Include="Chamado\Dto\ChamadoDto.cs" />
     <Compile Include="Chamado\Dto\ChamadoHistoricoStatusDto.cs" />
-    <Compile Include="Chamado\Dto\TipoCriticidadeDto.cs" />
-    <Compile Include="Chamado\Dto\TipoStatusDto.cs" />
     <Compile Include="Chamado\IChamadoRepository.cs" />
     <Compile Include="Chamado\IChamadoService.cs" />
     <Compile Include="Colaborador\Dto\ColaboradorDto.cs" />

@@ -20,15 +20,17 @@ namespace SmnHelpDesk.Api.Controllers
             _chamadoRepository = chamadoRepository;
         }
 
+        //Buscar os chamados para o grid de acordo com o idEmpresa ou senão passar busca todos chamados
         [HttpGet, Route("")]
-        public IHttpActionResult Get(int? idEmpresa, int? idStatus, int? idCliente)
+        public IHttpActionResult Get(int? idEmpresa)
         {
-            var chamados = _chamadoRepository.Get(idEmpresa, idStatus, idCliente);
+            var chamados = _chamadoRepository.Get(idEmpresa);
             if (chamados == null)
                 return BadRequest("Não foram encontrados chamados");
             return Ok(chamados);
         }
 
+        //Buscar o chamado por id para edição
         [HttpGet, Route("{id}")]
         public IHttpActionResult Get(int id)
         {
@@ -38,6 +40,7 @@ namespace SmnHelpDesk.Api.Controllers
             return Ok(chamado);
         }
 
+        //Cadastra um novo chamado
         [HttpPost, Route("")]
         public IHttpActionResult Post(ChamadoDto chamado)
         {
@@ -51,6 +54,7 @@ namespace SmnHelpDesk.Api.Controllers
             return Ok();
         }
 
+        //Faz alteração no chamado
         [HttpPut, Route("{id}")]
         public IHttpActionResult Put(int id, ChamadoDto chamado)
         {
@@ -63,30 +67,24 @@ namespace SmnHelpDesk.Api.Controllers
                 return BadRequest("Esse chamado não existe");
 
             _chamadoService.Put(chamado);
+
             if (_notification.Any)
                 return Content(HttpStatusCode.BadRequest, _notification.Get);
             return Ok();
         }
 
-        [HttpPatch, Route("{id}")]
-        public IHttpActionResult PutMotivoCancelamento(int id, string descricaoMotivoCancel)
+        //Atualiza os status de um chamado e inseri no historico de status
+        [HttpPut, Route("{idChamado}/status")]
+        public IHttpActionResult PutStatus(int idChamado, ChamadoHistoricoStatusDto chamadoHistorico)
         {
-            _chamadoRepository.Put(id, descricaoMotivoCancel);
-            return Ok();
-        }
+            if (chamadoHistorico == null)
+                return BadRequest("Os dados do chamado não foram enviados");
 
-        [HttpPut, Route("{idChamado}")]
-        public IHttpActionResult PutStatusCancelamento(int idChamado, int idStatus)
-        {
-            var historicoChamado = new ChamadoHistoricoStatusDto
-            {
-                IdChamado = idChamado,
-                IdStatus = idStatus
-            };
+            chamadoHistorico.IdChamado = idChamado;
+            _chamadoService.PutStatus(chamadoHistorico);
 
-            if (idStatus != 1 || idStatus != 2)
-                return BadRequest("Não é possível cancelar chamado");
-            _chamadoService.PutStatus(historicoChamado);
+            if (_notification.Any)
+                return Content(HttpStatusCode.BadRequest, _notification.Get);
             return Ok();
         }
     }

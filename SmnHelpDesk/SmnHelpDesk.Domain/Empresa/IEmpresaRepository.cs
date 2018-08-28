@@ -7,7 +7,7 @@ namespace SmnHelpDesk.Domain.Empresa
     {
         int Post(EmpresaDto empresa);
         EmpresaDto Get(decimal cnpj);
-        IEnumerable<EmpresaDto> GetAll(int? idCliente); // TODO: filtrar por cliente na proc
+        IEnumerable<EmpresaDto> GetAll(int? idCliente);
         void Put(EmpresaDto empresa);
         void Delete(decimal cnpj);
     }

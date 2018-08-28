@@ -8,31 +8,26 @@ namespace SmnHelpDesk.Repository.Repositories
     public class ChamadoRepository : IChamadoRepository
     {
         private readonly Conexao _conexao;
-
         public ChamadoRepository(Conexao conexao)
         {
             _conexao = conexao;
         }
-
         private enum Procedures
         {
             GKSSP_InsChamado,
             GKSSP_SelChamado,
             GKSSP_SelChamados,
             GKSSP_UpdChamado,
-            GKSSP_UpdDescricaoMotivoCancel,
-            GKSFNC_GetProximoNumeroChamado,
-            GKSSP_SelChamadoHistoricoStatus,
-            GKSSP_SelTipoStatus,
-            GKSSP_UpdChamadoHistoricoStatus
+            GKSSP_InsChamadoHistoricoStatus,
+            GKSSP_UpdChamadoStatus,
+            GKSFNC_GetProximoNumeroChamado
+
         }
 
-        public IEnumerable<ChamadoDto> Get(int? idEmpresa, int? idStatus, int? idCliente)
+        public IEnumerable<ChamadoDto> Get(int? idEmpresa)
         {
             _conexao.ExecuteProcedure(Procedures.GKSSP_SelChamados);
             _conexao.AddParameter("@IdEmpresa", idEmpresa);
-            _conexao.AddParameter("@IdStatus", idStatus);
-            _conexao.AddParameter("@IdCliente", idCliente);
 
             var chamados = new List<ChamadoDto>();
             using (var r = _conexao.ExecuteReader())
@@ -74,7 +69,7 @@ namespace SmnHelpDesk.Repository.Repositories
                     };
         }
 
-        public int GetProximoNumero(int idEmpresa)
+        public int GetProximoNumeroChamado(int idEmpresa)
         {
             _conexao.ExecuteProcedure(Procedures.GKSFNC_GetProximoNumeroChamado);
             _conexao.AddParameter("@IdEmpresa", idEmpresa);
@@ -96,7 +91,7 @@ namespace SmnHelpDesk.Repository.Repositories
 
         public void PostHistoricoStatus(ChamadoHistoricoStatusDto historicoStatus)
         {
-            _conexao.ExecuteProcedure(Procedures.GKSSP_SelChamadoHistoricoStatus);
+            _conexao.ExecuteProcedure(Procedures.GKSSP_InsChamadoHistoricoStatus);
             _conexao.AddParameter("IdChamado", historicoStatus.IdChamado);
             _conexao.AddParameter("IdStatus", historicoStatus.IdStatus);
             _conexao.AddParameter("IdColaborador", historicoStatus.IdColaborador);
@@ -107,7 +102,8 @@ namespace SmnHelpDesk.Repository.Repositories
         public void Put(ChamadoDto chamado)
         {
             _conexao.ExecuteProcedure(Procedures.GKSSP_UpdChamado);
-            _conexao.AddParameter("Nome", chamado.NomeProblema);
+            _conexao.AddParameter("Id", chamado.Id);
+            _conexao.AddParameter("NomeProblema", chamado.NomeProblema);
             _conexao.AddParameter("Descricao", chamado.Descricao);
             _conexao.AddParameter("IdCriticidade", chamado.IdCriticidade);
             _conexao.AddParameter("IdTipo", chamado.IdTipo);
@@ -116,19 +112,12 @@ namespace SmnHelpDesk.Repository.Repositories
             _conexao.ExecuteNonQuery();
         }
 
-        public void Put(int id, string descricaoMotivoCancel)
+        public void PutStatus(int idChamado, int idStatus, string descricaoMotivoCancel)
         {
-            _conexao.ExecuteProcedure(Procedures.GKSSP_UpdDescricaoMotivoCancel);
-            _conexao.AddParameter("@Id", id);
-            _conexao.AddParameter("@DescricaoMotivoCancel", descricaoMotivoCancel);
-            _conexao.ExecuteNonQuery();
-        }
-
-        public void PutStatus(int idChamado, int idStatus)
-        {
-            _conexao.ExecuteProcedure(Procedures.GKSSP_UpdChamadoHistoricoStatus);
-            _conexao.AddParameter("Id", idChamado);
+            _conexao.ExecuteProcedure(Procedures.GKSSP_UpdChamadoStatus);
+            _conexao.AddParameter("IdChamado", idChamado);
             _conexao.AddParameter("IdStatus", idStatus);
+            _conexao.AddParameter("DescricaoMotivoCancel", descricaoMotivoCancel);
             _conexao.ExecuteNonQuery();
         }
     }

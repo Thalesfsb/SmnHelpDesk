@@ -26,7 +26,6 @@ namespace SmnHelpDesk.Domain.Chamado.Dto
         public DateTime? DataAlteracao { get; set; }
         public string DescricaoMotivoCancel { get; set; }
         public bool IsPendenteAnalise => IdStatus == 1;
-
         public IEnumerable<ColaboradorDto> Colaboradores { get; set; }
 
         public bool IsValid(Notification notification)
@@ -40,7 +39,7 @@ namespace SmnHelpDesk.Domain.Chamado.Dto
                 camposObrigatorios.Add("Tipo");
 
             if (IdClienteCad == default(int))
-                camposObrigatorios.Add("Codigo do Cliente");
+                camposObrigatorios.Add("IdClienteCad");
 
             if (IdCriticidade == default(int))
                 camposObrigatorios.Add("Criticidade");
@@ -51,7 +50,7 @@ namespace SmnHelpDesk.Domain.Chamado.Dto
             if (camposObrigatorios.Any())
                 notification.Add("Favor informar os campos " + string.Join(", ", camposObrigatorios));
 
-            return notification.Any;
+            return !notification.Any;
         }
     }
 }
