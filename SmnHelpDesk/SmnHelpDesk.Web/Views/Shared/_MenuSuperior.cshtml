@@ -1,0 +1,38 @@
+﻿<div id="wrapper">
+    <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <li class="sidebar-brand">
+                <a href="#">SMN HelpDesk</a>
+            </li>
+            <li>
+                @Html.ActionLink("Home", "Index", "Home", null, new { @class = "nav" })
+            </li>
+            <li>
+                @Html.ActionLink("Chamados", "Index", "Chamado", null , new {@class="nav"})
+            </li>
+            <li>
+                <a href="#">Relátorios</a>
+            </li>
+            <li>
+                <a href="#">Clientes</a>
+            </li>
+            <li>
+                <a href="#">Colaborador</a>
+            </li>
+        </ul>
+    </div>
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            <h1>SMN HelpDesk</h1>
+            <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle"><i class="fas fa-bars"></i></a>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#menu-toggle").click(function (e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+</script>
+

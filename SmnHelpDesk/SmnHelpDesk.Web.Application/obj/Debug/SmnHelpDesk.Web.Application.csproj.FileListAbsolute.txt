@@ -1,0 +1,11 @@
+C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Web.Application\bin\Debug\SmnHelpDesk.Web.Application.dll.config
+C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Web.Application\bin\Debug\SmnHelpDesk.Web.Application.dll
+C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Web.Application\bin\Debug\SmnHelpDesk.Web.Application.pdb
+C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Web.Application\bin\Debug\Microsoft.Practices.ServiceLocation.dll
+C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Web.Application\bin\Debug\Newtonsoft.Json.dll
+C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Web.Application\bin\Debug\Microsoft.Practices.ServiceLocation.pdb
+C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Web.Application\bin\Debug\Microsoft.Practices.ServiceLocation.xml
+C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Web.Application\bin\Debug\Newtonsoft.Json.xml
+C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Web.Application\obj\Debug\SmnHelpDesk.Web.Application.csprojResolveAssemblyReference.cache
+C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Web.Application\obj\Debug\SmnHelpDesk.Web.Application.dll
+C:\Projects\ASP .NET MVC\SmnHelpDesk\SmnHelpDesk\SmnHelpDesk.Web.Application\obj\Debug\SmnHelpDesk.Web.Application.pdb

@@ -9,12 +9,10 @@ namespace SmnHelpDesk.Repository.Repositories
     public class EmpresaRepository : IEmpresaRepository
     {
         private readonly Conexao _conexao;
-
         public EmpresaRepository(Conexao conexao)
         {
             _conexao = conexao;
         }
-
         private enum Procedures
         {
             GKSSP_DelEmpresa,

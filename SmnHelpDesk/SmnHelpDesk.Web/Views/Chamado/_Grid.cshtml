@@ -1,0 +1,125 @@
+﻿@model IEnumerable<SmnHelpDesk.Web.Application.Chamado.Model.ChamadoModel>
+@{Layout = null;}
+
+<table id="tableChamados" class="table table-hover mx-auto">
+    <thead class="thead-dark">
+    <tr>
+        <th>CHAMADO</th>
+        <th>SOLICITANTE</th>
+        <th>PROBLEMA</th>
+        <th>CRITICIDADE</th>
+        <th>STATUS</th>
+        <th>DATA</th>
+        <th style="width: 51px"></th>
+    </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any())
+        {
+            foreach (var chamado in Model)
+            {
+                <tr>
+                    <td class="">@chamado.NumeroChamado</td>
+                    <td class="">@chamado.NomeClienteCad</td>
+                    <td class="">@chamado.NomeProblema</td>
+                    <td>@chamado.NomeCriticidade</td>
+                    <td>@chamado.NomeTipoStatus</td>
+                    <td>@chamado.DataFormatada</td>
+                    <td class="button-wrap">
+                        <button type="button" onclick="getDadosChamdo(@chamado.Id)" class="btn btn-primary btn-outline-info btn-sm" title="Editar">
+                            <i class="fas fa-pen-square"></i>
+                        </button>
+                        <button type="button" onclick="$('#divMotivoCancelamento').slideDown()" class="btn btn-danger btn-outline-danger btn-sm" title="Excluir"><i class="fa fa-times-circle"></i> </button>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr style="background-color: white">
+                <td colspan="11" style="text-align: center">Nenhhum usuário encontrado</td>
+            </tr>
+        }
+    </tbody>
+</table>
+@*<div class="col-sm-12">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <button type="button" class="btn btn-primary float-lg-right" onclick="getDadosChamdo()"><i class="fa fa-plus"></i><span> Novo</span></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="divMotivoCancelamento" class="row col-sm-12" style="display: none">
+    <div class="col-sm-12">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <fieldset>
+                        <legend>Motivo do Cancelamento</legend>
+                        <textarea class="col-sm-12 form-control" required="" rows="3" id="txtAreaJustificativa" placeholder="Digite aqui o motivo do cancelamento" maxlength="300"></textarea>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+        <div class="row float-sm-right">
+            <button type="button" onclick="deleteChamado()" class="btn btn-primary mr-2"><i class="fa fa-check"></i><span> Confirmar</span></button>
+            <button type="button" style="width: 116.66px" onclick="$('#divMotivoCancelamento').slideUp()" class="btn btn-primary"><i class="fa fa-close"></i><span> Fechar</span></button>
+        </div>
+    </div>
+</div>*@
+
+<script>
+    $("#divGridChamados").css("display", "none");
+    $("#divGridChamados").fadeIn(1000);
+    $("#tableChamados").DataTable({
+        "aLengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+        language: {
+            "sEmptyTable": "Nenhum registro encontrado",
+            "sInfo": "Mostrando _START_ até _END_ de _TOTAL_ registros",
+            "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+            "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Exibir _MENU_",
+            "sLoadingRecords": "Carregando...",
+            "sProcessing": "Processando...",
+            "sZeroRecords": "Nenhum registro encontrado",
+            "sSearch": "Pesquisar",
+            "oPaginate": {
+                "sNext": "Próximo",
+                "sPrevious": "Anterior",
+                "sFirst": "Primeiro",
+                "sLast": "Último"
+            },
+            "oAria": {
+                "sSortAscending": ": Ordenar colunas de forma ascendente",
+                "sSortDescending": ": Ordenar colunas de forma descendente"
+            }
+        }
+    });
+
+    function addRowSelected(tr) {
+        $("#tableChamados tbody tr").removeClass("rowselected");
+        $(tr).addClass("rowselected");
+        $("#txtAreaJustificativa").val('');
+    }
+
+    function deleteChamado() {
+        var tr = $("#tableChamados tbody tr.rowselected")[0];
+        $.post(urlsChamdo.remove, {
+            id: $(tr).attr("data-id-chamado"),
+            motivo: $("#txtAreaJustificativa").val()
+        }).success(function () {
+            $("#divErroChamados").detail("Chamado cancelado", "success", 5000);
+            $("#txtAreaJustificativa").val("");
+            $("#divMotivoCancelamento").slideUp();
+            getGridChamado();
+        }).error(function (xhr) {
+            $("#divErroChamados").detail(xhr.responseText, "error", 5000);
+        });
+    }
+
+</script>

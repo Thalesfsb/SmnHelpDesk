@@ -1,0 +1,60 @@
+﻿        <div id="divErroChamados"></div>
+        <div class="" id="divGridChamados" style="display: none"></div>
+        <div class="" id="divDadosChamado" style="display: none"></div>
+
+<script>
+    var urlsChamdo = {
+        getAll: '@Url.Action("GetAll", "Chamado")',
+        get: '@Url.Action("Get", "Chamado")',
+        remove: '@Url.Action("Delete", "Chamado")',
+        save: '@Url.Action("Save", "Chamado")'
+    };
+
+    var getGridChamado = (function fnc() {
+        $.get(urlsChamdo.getAll).success(function(data) {
+            $("#divGridChamados").html(data);
+            $("#divDadosChamado").fadeOut(function () {
+                $("#divGridChamados").fadeIn();
+            });
+        }).error(function(xhr) {
+            $("#divErroChamados").detail(xhr.responseText);
+        });
+        return fnc;
+    })();
+
+    function getDadosChamdo(id) {
+        $.get(urlsChamdo.get, {
+            id: id
+        }).success(function (data) {
+            $("#divDadosChamado").html(data);
+            $("#divGridChamados").fadeOut(function() {
+                $("#divDadosChamado").fadeIn();
+            });
+        }).error(function (xhr) {
+            $("#divErroChamados").detail(xhr.responseText);
+        });
+    }
+
+    function deleteChamado(id) {
+        $.get(urlsChamdo.remove, {
+            id: id
+        }).success(function () {
+            getGridChamado();
+            $("#divErroChamados").detail("Chamado cancelado", "success", 5000);
+        }).error(function (xhr) {
+            $("#divErroChamados").detail(xhr.responseText, "error", 5000);
+        });
+    }
+
+    function saveChamado() {
+        var dadosChamado = $("#formDadosChamado").serializeObject();
+        $.post(urlsChamdo.save, {
+            chamado: dadosChamado
+        }).success(function () {
+            $("#divErroChamados").detail("Operação realizada com sucesso!", "success", 5000);
+            getGridChamado();
+        }).error(function (xhr) {
+            $("#divErroChamados").detail(xhr.responseText, "error", 5000);
+        });
+    }
+</script>

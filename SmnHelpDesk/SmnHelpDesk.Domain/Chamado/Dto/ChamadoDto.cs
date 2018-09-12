@@ -2,13 +2,11 @@
 using SmnHelpDesk.Domain.Colaborador.Dto;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace SmnHelpDesk.Domain.Chamado.Dto
 {
     public class ChamadoDto
     {
-        [JsonIgnore]
         public int Id { get; set; }
         public int NumeroChamado { get; set; }
         public string NomeProblema { get; set; }
@@ -26,31 +24,9 @@ namespace SmnHelpDesk.Domain.Chamado.Dto
         public DateTime? DataAlteracao { get; set; }
         public string DescricaoMotivoCancel { get; set; }
         public bool IsPendenteAnalise => IdStatus == 1;
+        public string NomeColaboradorPrincipal { get; set; }
+
+        [JsonIgnore]
         public IEnumerable<ColaboradorDto> Colaboradores { get; set; }
-
-        public bool IsValid(Notification notification)
-        {
-            var camposObrigatorios = new List<string>();
-
-            if (string.IsNullOrEmpty(NomeProblema))
-                camposObrigatorios.Add("NomeProblema");
-
-            if (IdTipo == default(int))
-                camposObrigatorios.Add("Tipo");
-
-            if (IdClienteCad == default(int))
-                camposObrigatorios.Add("IdClienteCad");
-
-            if (IdCriticidade == default(int))
-                camposObrigatorios.Add("Criticidade");
-
-            if (string.IsNullOrEmpty(Descricao))
-                camposObrigatorios.Add("Descrição");
-
-            if (camposObrigatorios.Any())
-                notification.Add("Favor informar os campos " + string.Join(", ", camposObrigatorios));
-
-            return !notification.Any;
-        }
     }
 }

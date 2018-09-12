@@ -1,0 +1,51 @@
+﻿
+@model SmnHelpDesk.Web.ViewModels.ChamadoViewModel
+@{Layout = null;}
+
+<div class="col-sm-6 mx-auto">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="txtNomeClienteCad" class="">Solicitado por:</label>
+                <input type="text" id="txtNomeClienteCad" value="@Model.NomeClienteCad" name="NomeClienteCad" class="form-control" disabled>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="txtNomeProblema" class="">Problema:</label>
+                <input type="text" id="txtNomeProblema" value="@Model.NomeProblema" name="NomeProblema" class="form-control" disabled>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="txtNomeCriticidade" class="">Criticidade:</label>
+                <input type="text" id="txtNomeCriticidade" value="@Model.NomeCriticidade" name="NomeCriticidade" class="form-control" disabled>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label for="ddlNomeTipoStatus">Status</label>
+                @Html.DropDownList("ddlNomeTipoStatus", Model.ComboTipos, new { Class = "form-control", required = "required" })
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <label for="txtDescricao" class="">Descrição:</label>
+            <div class="form-group">
+                <textarea id="txtDescricao" class="form-control" placeholder="Digite aqui a descrição do chamado" name="Descricao" rows="5" 
+                          cols="50" maxlength="500" disabled>@Model.Descricao</textarea>
+            </div>
+        </div>
+    </div>
+    <div class="row float-sm-right" id="btn-camp-confirm-cad-usua">
+        <button type="button" onclick="saveChamado()" class="btn btn-success mr-1">Resolver</button>
+        <button type="button" onclick="getGridChamado()" class="btn btn-primary">Cancelar</button>
+    </div>
+</div>

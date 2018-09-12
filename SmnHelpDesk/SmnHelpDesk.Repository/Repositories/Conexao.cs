@@ -47,7 +47,6 @@ namespace SmnHelpDesk.Repository.Repositories
             SqlConnection.Close();
         }
 
-
         public void OpenConnection()
         {
             try

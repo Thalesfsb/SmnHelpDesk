@@ -8,23 +8,25 @@ namespace SmnHelpDesk.Domain.Chamado.Dto
     {
         [JsonIgnore]
         public int IdChamado { get; set; }
+        public decimal NumeroCpfCliente { get; set; }
         public byte IdStatus { get; set; }
-        public int? IdCliente { get; set; }
-        public int? IdColaborador { get; set; }
+        public int IdCliente { get; set; }
+        public int IdColaborador { get; set; }
         public string DescricaoMotivoCancel { get; set; }
         [JsonIgnore]
         public bool IsCancel => IdStatus == 7;
 
         public bool IsValid(Notification notification)
         {
-            if (!IdCliente.HasValue && !IdColaborador.HasValue)
+            if ((IdCliente == default(int) && IdColaborador == default(int))
+                || (IdCliente != default(int) && IdColaborador != default(int)))
                 notification.Add("Favor informar o cliente ou colaborador.");
 
-            if (IsCancel && !IdCliente.HasValue)
+            if (IsCancel && IdCliente == default(int))
                 notification.Add("Somente clientes podem cancelar chamados.");
 
             if (IsCancel && string.IsNullOrEmpty(DescricaoMotivoCancel))
-                notification.Add("Favor informar o cliente ou coloborador.");
+                notification.Add("É preciso cadastrar um motivo de cancelamento do chamado.");
 
             var camposObrigatorios = new List<string>();
 
@@ -36,6 +38,7 @@ namespace SmnHelpDesk.Domain.Chamado.Dto
 
             if (camposObrigatorios.Any())
                 notification.Add("Favor informar os campos: " + string.Join(", ", camposObrigatorios));
+
             return !notification.Any;
         }
     }

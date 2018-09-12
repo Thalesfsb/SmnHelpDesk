@@ -7,8 +7,8 @@ namespace SmnHelpDesk.Domain.Chamado
     {
         IEnumerable<ChamadoDto> Get(int? idEmpresa);
         ChamadoDto Get(int id);
-        int Post(ChamadoDto chamado);
-        void Put(ChamadoDto chamado);
+        int Post(Entities.Chamado chamado);
+        void Put(Entities.Chamado chamado);
         int GetProximoNumeroChamado(int idEmpresa);
         void PostHistoricoStatus(ChamadoHistoricoStatusDto historicoStatus);
         void PutStatus(int idChamado, int idStatus, string descricaoMotivoCancel);

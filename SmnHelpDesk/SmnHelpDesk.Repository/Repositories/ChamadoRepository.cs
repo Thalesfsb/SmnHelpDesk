@@ -1,6 +1,8 @@
 ﻿using SmnHelpDesk.Domain.Chamado;
 using SmnHelpDesk.Domain.Chamado.Dto;
+using SmnHelpDesk.Domain.Entities;
 using SmnHelpDesk.Repository.Infra.Extension;
+using System;
 using System.Collections.Generic;
 
 namespace SmnHelpDesk.Repository.Repositories
@@ -21,7 +23,6 @@ namespace SmnHelpDesk.Repository.Repositories
             GKSSP_InsChamadoHistoricoStatus,
             GKSSP_UpdChamadoStatus,
             GKSFNC_GetProximoNumeroChamado
-
         }
 
         public IEnumerable<ChamadoDto> Get(int? idEmpresa)
@@ -35,37 +36,36 @@ namespace SmnHelpDesk.Repository.Repositories
                     chamados.Add(new ChamadoDto
                     {
                         Id = r.GetValue<int>("Id"),
+                        IdStatus = r.GetValue<byte>("IdStatus"),
                         NumeroChamado = r.GetValue<int>("NumeroChamado"),
                         NomeEmpresa = r.GetValue<string>("NomeEmpresa"),
                         NomeClienteCad = r.GetValue<string>("NomeClienteCad"),
                         NomeProblema = r.GetValue<string>("NomeProblema"),
                         NomeCriticidade = r.GetValue<string>("NomeCriticidade"),
                         NomeTipoStatus = r.GetValue<string>("NomeTipoStatus"),
-                        DescricaoMotivoCancel = r.GetValue<string>("DescricaoMotivoCancel")
+                        DataCadastro = r.GetValue<DateTime>("DataCadastro")
                     });
             return chamados;
         }
 
-        public ChamadoDto Get(int id)
+        public ChamadoDto Get(int idChamado)
         {
             _conexao.ExecuteProcedure(Procedures.GKSSP_SelChamado);
-            _conexao.AddParameter("@Id", id);
+            _conexao.AddParameter("@Id", idChamado);
             using (var r = _conexao.ExecuteReader())
                 return !r.Read()
                     ? null
                     : new ChamadoDto
                     {
                         Id = r.GetValue<int>("Id"),
-                        IdClienteCad = r.GetValue<int>("IdClienteCad"),
-                        IdCriticidade = r.GetValue<byte>("IdCriticidade"),
+                        NomeProblema = r.GetValue<string>("NomeProblema"),
                         IdTipo = r.GetValue<byte>("IdTipo"),
-                        IdStatus = r.GetValue<byte>("IdStatus"),
-                        IdClienteAlt = r.GetValue<int>("IdClienteAlt"),
-                        Descricao = r.GetValue<string>("Descricao"),
                         NumeroChamado = r.GetValue<int>("NumeroChamado"),
-                        NomeCriticidade = r.GetValue<string>("NomeCriticidade"),
-                        NomeTipoStatus = r.GetValue<string>("NomeTipoStatus"),
-                        DescricaoMotivoCancel = r.GetValue<string>("DescricaoMotivoCancel")
+                        IdCriticidade = r.GetValue<byte>("IdCriticidade"),
+                        Descricao = r.GetValue<string>("Descricao"),
+                        IdStatus = r.GetValue<byte>("IdStatus"),
+                        NomeClienteCad = r.GetValue<string>("NomeClienteCad"),
+                        NomeCriticidade = r.GetValue<string>("NomeCriticidade")
                     };
         }
 
@@ -76,7 +76,7 @@ namespace SmnHelpDesk.Repository.Repositories
             return _conexao.ExecuteNonQueryWithReturn();
         }
 
-        public int Post(ChamadoDto chamado)
+        public int Post(Chamado chamado)
         {
             _conexao.ExecuteProcedure(Procedures.GKSSP_InsChamado);
             _conexao.AddParameter("NumeroChamado", chamado.NumeroChamado);
@@ -94,12 +94,12 @@ namespace SmnHelpDesk.Repository.Repositories
             _conexao.ExecuteProcedure(Procedures.GKSSP_InsChamadoHistoricoStatus);
             _conexao.AddParameter("IdChamado", historicoStatus.IdChamado);
             _conexao.AddParameter("IdStatus", historicoStatus.IdStatus);
-            _conexao.AddParameter("IdColaborador", historicoStatus.IdColaborador);
-            _conexao.AddParameter("IdCliente", historicoStatus.IdCliente);
+            _conexao.AddParameter("IdColaborador", historicoStatus.IdColaborador == default(int) ? (int?)null : historicoStatus.IdColaborador);
+            _conexao.AddParameter("IdCliente", historicoStatus.IdCliente == default(int) ? (int?)null : historicoStatus.IdCliente);
             _conexao.ExecuteNonQuery();
         }
 
-        public void Put(ChamadoDto chamado)
+        public void Put(Chamado chamado)
         {
             _conexao.ExecuteProcedure(Procedures.GKSSP_UpdChamado);
             _conexao.AddParameter("Id", chamado.Id);
@@ -109,6 +109,7 @@ namespace SmnHelpDesk.Repository.Repositories
             _conexao.AddParameter("IdTipo", chamado.IdTipo);
             _conexao.AddParameter("IdStatus", chamado.IdStatus);
             _conexao.AddParameter("IdClienteAlt", chamado.IdClienteAlt);
+            //_conexao.AddParameter("IdColaboradorPrincipal", chamado.IdColaboradorPrincipal); //TODO: Como pegar colaborador
             _conexao.ExecuteNonQuery();
         }
 
@@ -117,7 +118,7 @@ namespace SmnHelpDesk.Repository.Repositories
             _conexao.ExecuteProcedure(Procedures.GKSSP_UpdChamadoStatus);
             _conexao.AddParameter("IdChamado", idChamado);
             _conexao.AddParameter("IdStatus", idStatus);
-            _conexao.AddParameter("DescricaoMotivoCancel", descricaoMotivoCancel);
+            _conexao.AddParameter("DescricaoMotivoCancel", idStatus == 7 ? descricaoMotivoCancel : null);
             _conexao.ExecuteNonQuery();
         }
     }
