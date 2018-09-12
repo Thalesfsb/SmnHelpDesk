@@ -10,7 +10,7 @@
         <th>CRITICIDADE</th>
         <th>STATUS</th>
         <th>DATA</th>
-        <th style="width: 51px"></th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
@@ -26,10 +26,10 @@
                     <td>@chamado.NomeTipoStatus</td>
                     <td>@chamado.DataFormatada</td>
                     <td class="button-wrap">
-                        <button type="button" onclick="getDadosChamdo(@chamado.Id)" class="btn btn-primary btn-outline-info btn-sm" title="Editar">
-                            <i class="fas fa-pen-square"></i>
-                        </button>
-                        <button type="button" onclick="$('#divMotivoCancelamento').slideDown()" class="btn btn-danger btn-outline-danger btn-sm" title="Excluir"><i class="fa fa-times-circle"></i> </button>
+                        <button type="button" onclick="getDadosChamdo(@chamado.Id)" class="btn btn-info btn-sm" title="Editar">
+                            <i class="fas fa-pen-square"></i></button>
+                        @*<button type="button" onclick="$('#divMotivoCancelamento').slideDown()" class="btn btn-danger btn-outline-danger btn-sm" title="Excluir">
+                            <i class="fa fa-times-circle"></i> </button>*@
                     </td>
                 </tr>
             }
@@ -72,8 +72,7 @@
 </div>*@
 
 <script>
-    $("#divGridChamados").css("display", "none");
-    $("#divGridChamados").fadeIn(1000);
+    
     $("#tableChamados").DataTable({
         "aLengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
         language: {

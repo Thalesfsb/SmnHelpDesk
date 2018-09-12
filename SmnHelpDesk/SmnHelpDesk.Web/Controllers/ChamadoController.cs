@@ -26,13 +26,9 @@ namespace SmnHelpDesk.Web.Controllers
 
         public ActionResult Get(int? id)
         {
-            var comboCriticidades = GetComboCriticidade(null);
-            if (comboCriticidades == null)
+            var comboChamadoTipoStatus = GetChamadoTipoStatus(null);
+            if (comboChamadoTipoStatus == null)
                 return Error(new List<string> { "Erro ao buscar tipos de criticidades" });
-
-            var comboTipos = GetComboChamadoTipo(null);
-            if (comboTipos == null)
-                return Error(new List<string> { "Erro ao buscar tipos de chamado" });
 
             if (id == null)
                 return Error(new List<string> { "Erro chamado inexistente" });
@@ -42,8 +38,7 @@ namespace SmnHelpDesk.Web.Controllers
                 return Error(new List<string> { "Erro ao buscar detalhes do chamado" });
 
             var chamado = new ChamadoViewModel(response.Dados);
-            chamado.ComboTipos = GetComboChamadoTipo(chamado.IdTipo);
-            chamado.ComboCriticidades = GetComboCriticidade(chamado.IdCriticidade);
+            chamado.ComboStatus = GetChamadoTipoStatus(chamado.IdStatus);
             return View("_Dados", chamado);
         }
 
@@ -57,22 +52,13 @@ namespace SmnHelpDesk.Web.Controllers
             return View("_Grid");
         }
 
-        private SelectList GetComboCriticidade(int? selectedValue)
+        private SelectList GetChamadoTipoStatus(int? selectedValue)
         {
-            var responseCriticidades = _chamadoApplication.GetTipoCriticidade();
-            return !responseCriticidades.Ok
+            var responseChamadoTipoStatus = _chamadoApplication.GetChamadoTipoStatus();
+            return !responseChamadoTipoStatus.Ok
                 ? null
-                : new SelectList(responseCriticidades.Dados,
-                    nameof(TipoCriticidadeModel.Id), nameof(TipoCriticidadeModel.Nome), selectedValue);
-        }
-
-        private SelectList GetComboChamadoTipo(int? selectedValue)
-        {
-            var responseChamadoTipo = _chamadoApplication.GetChamadoTipo();
-            return !responseChamadoTipo.Ok
-                ? null
-                : new SelectList(responseChamadoTipo.Dados,
-                    nameof(ChamadoTipoModel.Id), nameof(ChamadoTipoModel.Nome), selectedValue);
+                : new SelectList(responseChamadoTipoStatus.Dados,
+                    nameof(ChamadoTipoStatusModel.Id), nameof(ChamadoTipoStatusModel.Nome), selectedValue);
         }
     }
 

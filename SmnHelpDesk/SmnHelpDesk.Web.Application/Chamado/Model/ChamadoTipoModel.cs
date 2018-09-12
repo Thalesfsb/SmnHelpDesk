@@ -2,7 +2,7 @@
 {
     public class ChamadoTipoModel
     {
-        public int Id { get; set; }
+        public byte Id { get; set; }
         public string Nome { get; set; }
     }
 }

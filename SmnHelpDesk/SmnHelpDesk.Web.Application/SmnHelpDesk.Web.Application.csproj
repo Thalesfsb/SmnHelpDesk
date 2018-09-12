@@ -54,6 +54,7 @@
     <Compile Include="Chamado\ChamadoApplication.cs" />
     <Compile Include="Chamado\Entities\Chamado.cs" />
     <Compile Include="Chamado\Model\ChamadoModel.cs" />
+    <Compile Include="Chamado\Model\ChamadoTipoStatusModel.cs" />
     <Compile Include="Chamado\Model\TipoCriticidadeModel.cs" />
     <Compile Include="Chamado\Model\ChamadoTipoModel.cs" />
     <Compile Include="Colaborador\ColaboradorApplication.cs" />

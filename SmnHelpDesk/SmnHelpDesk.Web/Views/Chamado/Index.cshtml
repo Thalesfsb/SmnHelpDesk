@@ -1,6 +1,6 @@
-﻿        <div id="divErroChamados"></div>
-        <div class="" id="divGridChamados" style="display: none"></div>
-        <div class="" id="divDadosChamado" style="display: none"></div>
+﻿<div id="divErroChamados"></div>
+<div class="" id="divGridChamados" style="display: none"></div>
+<div class="" id="divDadosChamado" style="display: none"></div>
 
 <script>
     var urlsChamdo = {
@@ -11,12 +11,12 @@
     };
 
     var getGridChamado = (function fnc() {
-        $.get(urlsChamdo.getAll).success(function(data) {
+        $.get(urlsChamdo.getAll).success(function (data) {
             $("#divGridChamados").html(data);
             $("#divDadosChamado").fadeOut(function () {
-                $("#divGridChamados").fadeIn();
+                $("#divGridChamados").fadeIn(1000);
             });
-        }).error(function(xhr) {
+        }).error(function (xhr) {
             $("#divErroChamados").detail(xhr.responseText);
         });
         return fnc;
@@ -27,7 +27,7 @@
             id: id
         }).success(function (data) {
             $("#divDadosChamado").html(data);
-            $("#divGridChamados").fadeOut(function() {
+            $("#divGridChamados").fadeOut(function () {
                 $("#divDadosChamado").fadeIn();
             });
         }).error(function (xhr) {

@@ -2,6 +2,7 @@
 using SmnHelpDesk.Domain.Chamado;
 using SmnHelpDesk.Domain.Chamado.Dto;
 using SmnHelpDesk.Domain.ChamadoTipo;
+using SmnHelpDesk.Domain.ChamadoTipoStatus;
 using SmnHelpDesk.Domain.Entities;
 using SmnHelpDesk.Domain.TipoCriticidade;
 using System.Net;
@@ -16,16 +17,18 @@ namespace SmnHelpDesk.Api.Controllers
         private readonly IChamadoRepository _chamadoRepository;
         private readonly ITipoCriticidadeRepository _tipoCriticidadeRepository;
         private readonly IChamadoTipoRepository _chamadoTipoRepository;
+        private readonly IChamadoTipoStatusRepository _chamadoTipoStatusRepository;
         private readonly Notification _notification;
 
         public ChamadoController(Notification notification, IChamadoService chamadoService, IChamadoRepository chamadoRepository,
-            ITipoCriticidadeRepository tipoCriticidadeRepository, IChamadoTipoRepository chamadoTipoRepository)
+            ITipoCriticidadeRepository tipoCriticidadeRepository, IChamadoTipoRepository chamadoTipoRepository, IChamadoTipoStatusRepository chamadoTipoStatusRepository)
         {
             _notification = notification;
             _chamadoService = chamadoService;
             _chamadoRepository = chamadoRepository;
             _tipoCriticidadeRepository = tipoCriticidadeRepository;
             _chamadoTipoRepository = chamadoTipoRepository;
+            _chamadoTipoStatusRepository = chamadoTipoStatusRepository;
         }
 
         //Buscar os chamados para o grid de acordo com o idEmpresa ou senão passar busca todos chamados
@@ -54,7 +57,7 @@ namespace SmnHelpDesk.Api.Controllers
         {
             var tipoCriticidade = _tipoCriticidadeRepository.Get();
             if (tipoCriticidade == null)
-                return BadRequest("Não foi encontrado nenhum chamado");
+                return BadRequest("Não foram encontrados os tipos de criticidade de chamado");
             return Ok(tipoCriticidade);
         }
 
@@ -64,8 +67,18 @@ namespace SmnHelpDesk.Api.Controllers
         {
             var chamadoTipo = _chamadoTipoRepository.Get();
             if (chamadoTipo == null)
-                return BadRequest("Não foi encontrado nenhum chamado");
+                return BadRequest("Não foram encontrados os tipos de chamados");
             return Ok(chamadoTipo);
+        }
+
+        //Buscar os tipos de status
+        [HttpGet, Route("ChamadoTipoStatus")]
+        public IHttpActionResult GetChamadoTipoStatus()
+        {
+            var chamadoTipoStatus = _chamadoTipoStatusRepository.Get();
+            if (chamadoTipoStatus == null)
+                return BadRequest("Não foram encontrados os tipos de status de chamado");
+            return Ok(chamadoTipoStatus);
         }
 
         //Cadastra um novo chamado

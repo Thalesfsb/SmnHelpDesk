@@ -45,6 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChamadoTipoStatus\Dto\ChamadoTipoStatusDto.cs" />
+    <Compile Include="ChamadoTipoStatus\IChamadoTipoStatusRepository.cs" />
     <Compile Include="Chamado\ChamadoService.cs" />
     <Compile Include="Chamado\Dto\ChamadoDto.cs" />
     <Compile Include="Chamado\Dto\ChamadoHistoricoStatusDto.cs" />

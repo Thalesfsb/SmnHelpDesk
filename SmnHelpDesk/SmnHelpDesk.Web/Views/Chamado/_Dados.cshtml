@@ -20,7 +20,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-6">
             <div class="form-group">
                 <label for="txtNomeCriticidade" class="">Criticidade:</label>
                 <input type="text" id="txtNomeCriticidade" value="@Model.NomeCriticidade" name="NomeCriticidade" class="form-control" disabled>
@@ -30,8 +30,8 @@
     <div class="row">
         <div class="col-sm-6">
             <div class="form-group">
-                <label for="ddlNomeTipoStatus">Status</label>
-                @Html.DropDownList("ddlNomeTipoStatus", Model.ComboTipos, new { Class = "form-control", required = "required" })
+                <label>Status</label>
+                @Html.DropDownList("ddlChamadoTipoStatus", Model.ComboStatus, new { Class = "form-control", required = "required" })
             </div>
         </div>
     </div>

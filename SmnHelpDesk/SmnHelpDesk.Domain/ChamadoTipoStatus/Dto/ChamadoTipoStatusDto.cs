@@ -1,6 +1,6 @@
-﻿namespace SmnHelpDesk.Web.Application.Chamado.Model
+﻿namespace SmnHelpDesk.Domain.ChamadoTipoStatus.Dto
 {
-    public class TipoCriticidadeModel
+    public class ChamadoTipoStatusDto
     {
         public byte Id { get; set; }
         public string Nome { get; set; }

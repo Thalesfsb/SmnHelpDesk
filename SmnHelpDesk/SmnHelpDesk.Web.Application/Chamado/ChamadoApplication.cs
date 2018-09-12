@@ -15,6 +15,9 @@ namespace SmnHelpDesk.Web.Application.Chamado
 
         public Response<IEnumerable<ChamadoTipoModel>> GetChamadoTipo() => Get<IEnumerable<ChamadoTipoModel>>("ChamadoTipo");
 
+        public Response<IEnumerable<ChamadoTipoStatusModel>> GetChamadoTipoStatus()
+            => Get<IEnumerable<ChamadoTipoStatusModel>>("ChamadoTipoStatus");
+
         public Response Post(Entities.Chamado chamado) => Post<Entities.Chamado>(chamado);
 
         public Response<Entities.Chamado> Put(Entities.Chamado chamado) => (Response<Entities.Chamado>)Put(chamado, chamado.Id);

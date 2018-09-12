@@ -3,6 +3,7 @@ using SimpleInjector.Lifestyles;
 using SmnHelpDesk.Domain;
 using SmnHelpDesk.Domain.Chamado;
 using SmnHelpDesk.Domain.ChamadoTipo;
+using SmnHelpDesk.Domain.ChamadoTipoStatus;
 using SmnHelpDesk.Domain.Cliente;
 using SmnHelpDesk.Domain.Empresa;
 using SmnHelpDesk.Domain.TipoCriticidade;
@@ -24,6 +25,7 @@ namespace SmnHelpDesk.Api
             container.Register<IChamadoTipoRepository, ChamadoTipoRepository>();
             container.Register<IClienteRepository, ClienteRepository>();
             container.Register<ITipoCriticidadeRepository, TipoCriticidadeRepository>();
+            container.Register<IChamadoTipoStatusRepository, ChamadoTipoStatusRepository>();
             container.Register<Notification>(Lifestyle.Scoped);
             container.Verify();
             return container;

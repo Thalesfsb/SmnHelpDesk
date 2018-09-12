@@ -37,5 +37,6 @@ namespace SmnHelpDesk.Web.ViewModels
         public bool IsPendenteAnalise => IdStatus == 1;
         public SelectList ComboTipos { get; set; }
         public SelectList ComboCriticidades { get; set; }
+        public SelectList ComboStatus { get; set; }
     }
 }

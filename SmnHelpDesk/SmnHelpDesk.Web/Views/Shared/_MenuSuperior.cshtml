@@ -1,24 +1,20 @@
 ﻿<div id="wrapper">
     <div id="sidebar-wrapper">
         <ul class="sidebar-nav">
-            <li class="sidebar-brand">
-                <a href="#">SMN HelpDesk</a>
-            </li>
+            <li class="sidebar-brand"><a href="#">SMN HelpDesk</a></li>
+            <li><a href="@Url.Action("Index", "Home")"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="@Url.Action("Index", "Chamado")"><i class="fas fa-bullhorn"></i> Chamados</a></li>
+            <li><a href="@Url.Action("Index", "Chamado")"><i class="fas fa-clipboard-list"></i> Relátorios</a></li>
             <li>
-                @Html.ActionLink("Home", "Index", "Home", null, new { @class = "nav" })
+                <a href="@Url.Action("Index", "Chamado")" id="btn-1" data-toggle="collapse" data-target="#submenu1"
+                   aria-expanded="false"><i class="fas fa-users"></i> Clientes</a>
+
+                <ul class="nav-link collapse" id="submenu1" role="menu" aria-labelledby="btn-1">
+                    <li><a class="ml-lg-5" href="@Url.Action("Index", "Chamado")">Empresas</a></li>
+                    <li><a class="ml-lg-5" href="@Url.Action("Index", "Chamado")">Funcionários</a></li>
+                </ul>
             </li>
-            <li>
-                @Html.ActionLink("Chamados", "Index", "Chamado", null , new {@class="nav"})
-            </li>
-            <li>
-                <a href="#">Relátorios</a>
-            </li>
-            <li>
-                <a href="#">Clientes</a>
-            </li>
-            <li>
-                <a href="#">Colaborador</a>
-            </li>
+            <li><a href="@Url.Action("Index", "Chamado")"><i class="fas fa-user-ninja"></i> Colaboradores</a></li>
         </ul>
     </div>
     <div id="page-content-wrapper">
@@ -32,7 +28,9 @@
 <script>
     $("#menu-toggle").click(function (e) {
         e.preventDefault();
+        if ($("#btn-1").attr("aria-expanded") === "true") {
+            $("#btn-1").trigger("click");
+        }
         $("#wrapper").toggleClass("toggled");
     });
 </script>
-
